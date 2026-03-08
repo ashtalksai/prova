@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { signIn } from "next-auth/react"
 import { Check, Shield } from "lucide-react"
 
 const features = [
@@ -37,6 +38,19 @@ export default function SignupPage() {
 
       if (!res.ok) {
         setError(data.error || "Something went wrong")
+        return
+      }
+
+      // Auto sign-in after successful signup
+      const signInResult = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      })
+
+      if (signInResult?.error) {
+        setError("Account created but sign-in failed. Please log in manually.")
+        router.push("/login")
         return
       }
 
