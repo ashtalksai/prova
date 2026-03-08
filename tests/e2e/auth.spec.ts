@@ -93,4 +93,47 @@ test.describe('Authentication', () => {
     const url = page.url();
     expect(url).toMatch(/\/login|\/$/);
   });
+
+  // BUG FIX 1: Signup auto-signin and redirect to dashboard
+  test('signup redirects to dashboard after account creation', async ({ page }) => {
+    const timestamp = Date.now();
+    const testEmail = `qatest${timestamp}@mailtest.dev`;
+    await page.goto('/signup');
+    await page.getByPlaceholder(/full name/i).fill('QA Test User');
+    await page.getByPlaceholder(/email address/i).fill(testEmail);
+    await page.getByPlaceholder(/password/i).fill('TestPass123!');
+    await page.getByPlaceholder(/company name/i).fill('QA Test Facility');
+    await page.getByRole('button', { name: /create account/i }).click();
+    // Should auto-signin and redirect to dashboard
+    await page.waitForURL(/\/dashboard/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/dashboard/);
+    await expect(page.getByText('Total Vehicles')).toBeVisible();
+  });
+
+  // BUG FIX 2: Forgot-password page exists and works
+  test('forgot-password page exists and renders correctly', async ({ page }) => {
+    await page.goto('/forgot-password');
+    await expect(page.getByRole('heading', { name: 'Reset your password' })).toBeVisible();
+    await expect(page.getByPlaceholder(/email address/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /send reset link/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /back to sign in/i })).toBeVisible();
+  });
+
+  test('forgot-password link on login page works', async ({ page }) => {
+    await page.goto('/login');
+    await expect(page.getByRole('link', { name: /forgot password/i })).toBeVisible();
+    await page.getByRole('link', { name: /forgot password/i }).click();
+    await expect(page).toHaveURL(/\/forgot-password/);
+    await expect(page.getByRole('heading', { name: 'Reset your password' })).toBeVisible();
+  });
+
+  test('forgot-password form submission shows confirmation', async ({ page }) => {
+    await page.goto('/forgot-password');
+    await page.getByPlaceholder(/email address/i).fill('test@example.com');
+    await page.getByRole('button', { name: /send reset link/i }).click();
+    await page.waitForLoadState('networkidle');
+    // Should show confirmation state
+    await expect(page.getByRole('heading', { name: 'Check your email' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /return to sign in/i })).toBeVisible();
+  });
 });
