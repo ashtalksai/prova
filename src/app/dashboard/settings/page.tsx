@@ -29,7 +29,7 @@ const labelClass = "block text-[#a0a8b8] text-xs font-sans uppercase tracking-wi
 export default function SettingsPage() {
   const [facilityName, setFacilityName] = useState("Vault Automotive - Manhattan");
   const [address, setAddress] = useState("450 W 33rd St, New York, NY 10001");
-  const [phone, setPhone] = useState("(555) 000-0000");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("ops@vaultautomotive.com");
 
   return (

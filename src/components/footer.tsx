@@ -68,10 +68,10 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="tel:+15550000000"
+                  href="mailto:hello@getprova.com"
                   className="font-sans text-sm text-[#5c6478] hover:text-[#a0a8b8] transition-colors duration-200"
                 >
-                  (555) 000-0000
+                  hello@getprova.com
                 </a>
               </li>
               <li>

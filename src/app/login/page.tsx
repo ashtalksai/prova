@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 import { Check, Shield } from "lucide-react"
+import { Suspense } from "react"
 
 const features = [
   "Real-time facility overview",
@@ -13,12 +14,21 @@ const features = [
   "Owner communications",
 ]
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isDemo = searchParams.get("demo") === "true"
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    if (isDemo) {
+      setEmail("demo@getprova.com")
+      setPassword("demo1234")
+    }
+  }, [isDemo])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -170,6 +180,23 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Demo access */}
+          {!isDemo && (
+            <button
+              type="button"
+              onClick={() => router.push("/login?demo=true")}
+              className="mt-4 w-full border border-[#1e2d45] rounded-full py-3 text-[#a0a8b8] text-sm hover:border-[#c9a84c]/50 hover:text-[#c9a84c] transition-colors cursor-pointer"
+            >
+              Try Demo Account
+            </button>
+          )}
+
+          {isDemo && (
+            <p className="mt-4 text-center text-xs text-[#c9a84c]">
+              Demo credentials loaded — click Sign In
+            </p>
+          )}
+
           {/* Footer link */}
           <p className="mt-6 text-center text-sm text-[#a0a8b8]">
             Don&apos;t have an account?{" "}
@@ -186,5 +213,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }

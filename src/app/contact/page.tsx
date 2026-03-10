@@ -257,7 +257,7 @@ export default function ContactPage() {
                       href="tel:+15550000000"
                       className="font-sans text-sm text-[#a0a8b8] hover:text-[#c9a84c] transition-colors duration-200"
                     >
-                      (555) 000-0000
+                      hello@getprova.com
                     </a>
                   </div>
                 </div>
