@@ -15,15 +15,18 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
+
+# Copy standalone Next.js build
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-# Prisma: schema, migrations, seed
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/package.json ./package.json
-# Install only prisma CLI + bcryptjs for migrations and seed
-RUN npm install --no-save prisma @prisma/client bcryptjs
-RUN npx prisma generate
+
+# Separate directory for prisma migration tooling
+COPY --from=builder /app/node_modules /migrate/node_modules
+COPY --from=builder /app/prisma /migrate/prisma
+COPY --from=builder /app/package.json /migrate/package.json
+COPY prisma/seed-prod.js /migrate/prisma/seed-prod.js
+
 COPY entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 EXPOSE 3000

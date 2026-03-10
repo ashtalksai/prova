@@ -2,10 +2,10 @@
 set -e
 
 echo "Running Prisma migrations..."
-npx prisma migrate deploy
+cd /migrate && npx prisma migrate deploy
 
 echo "Seeding database..."
-node prisma/seed-prod.js
+cd /migrate && node prisma/seed-prod.js
 
 echo "Starting server..."
-exec node server.js
+cd /app && exec node server.js
