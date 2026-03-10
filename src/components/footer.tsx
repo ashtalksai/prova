@@ -6,26 +6,21 @@ const columns = [
     links: [
       { label: "Features", href: "#features" },
       { label: "Pricing", href: "/pricing" },
-      { label: "Demo", href: "#" },
-      { label: "Integrations", href: "#" },
+      { label: "Demo", href: "/login?demo=true" },
     ],
   },
   {
     heading: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Careers", href: "#" },
       { label: "Contact", href: "/contact" },
-      { label: "Blog", href: "#" },
     ],
   },
   {
     heading: "Resources",
     links: [
       { label: "Documentation", href: "/docs" },
-      { label: "API Reference", href: "#" },
-      { label: "Status", href: "#" },
-      { label: "Changelog", href: "#" },
+      { label: "Pitch Deck", href: "/deck" },
     ],
   },
 ];

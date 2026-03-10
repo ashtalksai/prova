@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   LayoutDashboard,
   Car,
@@ -117,11 +117,16 @@ function MobileBottomTabs({ pathname }: { pathname: string }) {
 }
 
 function TopHeader({ pathname }: { pathname: string }) {
+  const { data: session } = useSession();
   const currentPage = navItems.find(({ href }) =>
     href === "/dashboard"
       ? pathname === "/dashboard"
       : pathname.startsWith(href)
   );
+
+  const userName = session?.user?.name ?? "User";
+  const userEmail = session?.user?.email ?? "";
+  const initials = userName.charAt(0).toUpperCase();
 
   return (
     <header className="flex items-center justify-between mb-8">
@@ -134,19 +139,19 @@ function TopHeader({ pathname }: { pathname: string }) {
         </p>
       </div>
 
-      {/* Avatar placeholder */}
+      {/* User info from session */}
       <div className="flex items-center gap-3">
         <div className="text-right hidden sm:block">
           <p className="text-[#f0ebe0] text-sm font-sans font-medium leading-none">
-            Facility Manager
+            {userName}
           </p>
           <p className="text-[#5c6478] text-xs font-sans mt-0.5">
-            admin@prova.io
+            {userEmail}
           </p>
         </div>
         <div className="w-9 h-9 rounded-full bg-[#162036] border border-[#1e2d45] flex items-center justify-center flex-shrink-0">
           <span className="font-serif text-[#c9a84c] text-sm font-bold">
-            F
+            {initials}
           </span>
         </div>
       </div>

@@ -21,7 +21,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/images/logo-placeholder.png"
+            src="/images/logo.png"
             alt="Prova"
             width={28}
             height={28}

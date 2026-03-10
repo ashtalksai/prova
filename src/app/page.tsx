@@ -283,9 +283,12 @@ export default function Home() {
                 >
                   Get Started
                 </Link>
-                <button className="font-sans border border-[#1e2d45] text-[#f0ebe0] rounded-full px-8 py-3 hover:border-[#c9a84c] transition-colors duration-200">
+                <Link
+                  href="/login?demo=true"
+                  className="font-sans border border-[#1e2d45] text-[#f0ebe0] rounded-full px-8 py-3 hover:border-[#c9a84c] transition-colors duration-200 inline-block text-center"
+                >
                   Watch Demo
-                </button>
+                </Link>
               </div>
             </motion.div>
 
